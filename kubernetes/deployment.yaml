@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-demo-deployment
+  labels:
+    app: py-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: py-demo
+  template:
+    metadata:
+      labels:
+        app: py-demo
+    spec:
+      containers:
+      - name: py-demo
+        image: docker.io/playtechnique/py-demo:0.0.1
+        ports:
+        - containerPort: 8000
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: "RuntimeDefault"
